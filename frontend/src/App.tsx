@@ -24,15 +24,18 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<AppPage />} />
+            <Route path="/error" element={<Error />} />
+            <Route path="*" element={<NotFound />} />
+            {/*
             <Route path="/" element={<Landing />} />
+            <Route path="/app" element={<AppPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/app" element={<AppPage />} />
             <Route path="/profile/setup" element={<ProfileSetup />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/error" element={<Error />} />
-            <Route path="*" element={<NotFound />} />
+            */}
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

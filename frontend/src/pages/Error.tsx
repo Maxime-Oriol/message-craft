@@ -1,12 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, ArrowLeft, RefreshCw } from "lucide-react";
+import { Mail, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Error = () => {
-  const handleRefresh = () => {
-    window.location.reload();
-  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -34,11 +31,6 @@ const Error = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-col space-y-2">
-              <Button onClick={handleRefresh} className="w-full">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Actualiser la page
-              </Button>
-              
               <Button variant="outline" asChild className="w-full">
                 <Link to="/">
                   <ArrowLeft className="w-4 h-4 mr-2" />
