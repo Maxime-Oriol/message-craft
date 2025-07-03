@@ -25,9 +25,9 @@ L'application est construite autour de 8 pages principales :
            /login → /app
 ```
 
-- **Visiteurs non-connectés** : Accès limité à 10 générations sur `/app`
-- **Utilisateurs connectés** : 3 générations par jour + fonctionnalités avancées
-- **Redirection automatique** : Après 10 générations → invitation à créer un compte
+- **Visiteurs non-connectés** : Accès limité à 10 Crafts sur `/app`
+- **Utilisateurs connectés** : 3 Crafts par jour + fonctionnalités avancées
+- **Redirection automatique** : Après 10 Crafts → invitation à créer un compte
 
 ## ⚙️ Fonctionnement de l'application
 
@@ -50,8 +50,8 @@ Trois méthodes d'analyse du style de communication :
 
 ### Système de limitations
 
-- **Invités** : 10 générations maximum (compteur localStorage)
-- **Utilisateurs gratuits** : 3 générations/jour (reset quotidien)
+- **Invités** : 10 Crafts maximum (compteur localStorage)
+- **Utilisateurs gratuits** : 3 Crafts/jour (reset quotidien)
 - **Tracking d'usage** : Incrémentation automatique à chaque génération
 
 ## 📊 Jeu de données fictif

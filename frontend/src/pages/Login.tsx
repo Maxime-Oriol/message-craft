@@ -57,7 +57,7 @@ const Login = () => {
           <CardHeader className="text-center">
             <CardTitle>Se connecter</CardTitle>
             <CardDescription>
-              Connectez-vous pour accéder à vos 3 générations quotidiennes
+              Connectez-vous pour accéder à vos 3 Crafts quotidiens
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -109,7 +109,7 @@ const Login = () => {
 
         <div className="text-center">
           <Link to="/app" className="text-sm text-muted-foreground hover:text-primary">
-            Continuer sans compte (10 générations gratuites)
+            Continuer sans compte (10 Crafts gratuits)
           </Link>
         </div>
       </div>

@@ -77,7 +77,7 @@ const Profile = () => {
                 </div>
 
                 <div>
-                  <p className="text-sm text-muted-foreground">Générations aujourd'hui</p>
+                  <p className="text-sm text-muted-foreground">Crafts aujourd'hui</p>
                   <div className="flex items-center space-x-2">
                     <Badge variant={user.generationsUsed >= user.maxGenerations ? "destructive" : "default"}>
                       {user.generationsUsed} / {user.maxGenerations}
@@ -135,7 +135,7 @@ const Profile = () => {
                 <div className="bg-gradient-to-r from-primary/10 to-purple-600/10 rounded-lg p-4">
                   <h4 className="font-semibold mb-2">Passez au premium</h4>
                   <ul className="text-sm text-muted-foreground space-y-1 mb-4">
-                    <li>• Générations illimitées</li>
+                    <li>• Crafts illimités</li>
                     <li>• Style avancé personnalisé</li>
                     <li>• Historique complet</li>
                     <li>• Support prioritaire</li>

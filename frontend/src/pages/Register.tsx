@@ -69,7 +69,7 @@ const Register = () => {
           <CardHeader className="text-center">
             <CardTitle>Créer un compte</CardTitle>
             <CardDescription>
-              Obtenez 3 générations de messages par jour gratuitement
+              Obtenez 3 Crafts par jour gratuitement
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -138,7 +138,7 @@ const Register = () => {
 
         <div className="text-center">
           <Link to="/app" className="text-sm text-muted-foreground hover:text-primary">
-            Continuer sans compte (10 générations gratuites)
+            Continuer sans compte (10 Crafts gratuits)
           </Link>
         </div>
       </div>

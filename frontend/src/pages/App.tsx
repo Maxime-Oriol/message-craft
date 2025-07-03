@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -70,7 +69,7 @@ const AppPage = () => {
         toast({
           variant: "destructive",
           title: "Limite quotidienne atteinte",
-          description: "Revenez demain pour 3 nouvelles générations",
+          description: "Revenez demain pour 3 nouveaux Crafts",
         });
         return;
       }
@@ -210,7 +209,7 @@ const AppPage = () => {
           
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Badge variant="outline" className="text-xs sm:text-sm px-2 sm:px-3">
-              <span className="hidden sm:inline">{getGenerationsLeft()} générations restantes</span>
+              <span className="hidden sm:inline">{getGenerationsLeft()} Crafts restants</span>
               <span className="sm:hidden">{getGenerationsLeft()}</span>
             </Badge>
             
@@ -238,17 +237,6 @@ const AppPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="intention">Décrivez votre intention</Label>
-                <Textarea
-                  id="intention"
-                  placeholder="Ex: Email de démission, Message LinkedIn au recruteur, Rappel Slack..."
-                  value={intention}
-                  onChange={(e) => setIntention(e.target.value)}
-                  rows={3}
-                  className="min-h-[80px] text-base"
-                />
-              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="platform">Plateforme cible</Label>
@@ -265,6 +253,22 @@ const AppPage = () => {
                   </SelectContent>
                 </Select>
               </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="intention">Décrivez votre intention</Label>
+                <p className="text-sm text-muted-foreground">
+                  Plus votre intention est détaillée, plus la rédaction sera précise et correspondra à votre besoin.
+                </p>
+                <Textarea
+                  id="intention"
+                  placeholder="Ex: Proposer une offre d'emploi, Demander à Camille si elle a corrigé le document, Résiliation salle de sport..."
+                  value={intention}
+                  onChange={(e) => setIntention(e.target.value)}
+                  rows={3}
+                  className="min-h-[80px] text-base"
+                />
+              </div>
+
 
               <Button 
                 onClick={generateMessage}
@@ -345,6 +349,56 @@ const AppPage = () => {
             </CardContent>
           </Card>
         </div>
+        <div className="mt-8">
+          <Card className="w-full">
+              <CardHeader>
+                <CardTitle>Exemples de prompts</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <p className="font-medium">Cas d’usage avancés :</p>
+                  <ul className="space-y-1">
+                    <li
+                      className="cursor-pointer hover:underline"
+                      onClick={() => {
+                        setIntention("Proposer un rendez-vous à Camille dans nos locaux\n- Lundi 10h\n- Mercredi 16h\n- Vendredi 12h30 pour déjeuner");
+                        setPlatform("email");
+                      }}
+                    >
+                      📅 Proposer un rendez-vous selon 3 créneaux par e-mail
+                    </li>
+                    <li
+                      className="cursor-pointer hover:underline"
+                      onClick={() => {
+                        setIntention("Demander à David où en est la validation du budget prévisionnel 2025");
+                        setPlatform("slack");
+                      }}
+                    >
+                      💬 Relancer un collègue sur Slack pour une tâche en cours
+                    </li>
+                    <li
+                      className="cursor-pointer hover:underline"
+                      onClick={() => {
+                        setIntention("Envoyer une mise à jour aux clients sur les nouvelles fonctionnalités du produit lancées ce mois-ci");
+                        setPlatform("linkedin");
+                      }}
+                    >
+                      📣 Partager une mise à jour produit sur LinkedIn
+                    </li>
+                    <li
+                      className="cursor-pointer hover:underline"
+                      onClick={() => {
+                        setIntention("Rédige un mail de résiliation pour la salle de sport Neoness");
+                        setPlatform("email");
+                      }}
+                    >
+                      ❌ Email de résiliation salle de sport
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
       </div>
     </div>
   );

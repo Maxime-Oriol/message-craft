@@ -131,7 +131,7 @@ const ProfileSetup = () => {
                   </Label>
                   <Textarea
                     id="messages"
-                    placeholder="Collez vos messages ici... Nous analyserons votre style pour personnaliser les futures générations."
+                    placeholder="Collez vos messages ici... Nous analyserons votre style pour personnaliser les futurs crafts."
                     value={pastedMessages}
                     onChange={(e) => setPastedMessages(e.target.value)}
                     rows={8}
