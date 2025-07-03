@@ -5,10 +5,10 @@ MessageCraft est une application web intelligente qui génère des messages pers
 ## 🚀 Roadmap MessageCraft et avancement
 
 ### ✅ V1 — Lancement initial (MVP)
-- Génération de messages à partir d'une intention et d'une plateforme cible
-✅ Interface 100% gratuite, sans inscription
-✅ UUID utilisateur anonyme
-- Sauvegarde en base des intentions + messages générés
+- Génération de messages à partir d'une intention et d'une plateforme cible  
+✅ Interface 100% gratuite, sans inscription  
+✅ UUID utilisateur anonyme  
+- Sauvegarde en base des intentions + messages générés  
 
 ### 🔁 V2 — Style personnalisé automatique
 - Entraînement du modèle sur les messages ajustés par l'utilisateur
