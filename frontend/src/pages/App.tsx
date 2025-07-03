@@ -5,20 +5,22 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Copy, ArrowLeft, Plus } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Mail, Copy, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { Header } from "@/components/ui/header"
+import { Footer } from "@/components/ui/footer"
 
 const platforms = [
   { value: "email", label: "Email" },
-  { value: "slack", label: "Slack" },
-  { value: "sms", label: "SMS" },
+  { value: "corporate", label: "Slack - Teams" },
   { value: "linkedin", label: "LinkedIn" },
   { value: "instagram", label: "Instagram" },
-  { value: "twitter", label: "Twitter/X" },
+  { value: "twitter", label: "Twitter/ X" },
   { value: "blog", label: "Article de blog" },
   { value: "whatsapp", label: "WhatsApp" },
+  { value: "sms", label: "SMS" }
 ];
 
 const adjustments = [
@@ -45,9 +47,13 @@ const AppPage = () => {
   const [variantA, setVariantA] = useState("");
   const [variantB, setVariantB] = useState("");
   
-  const { user, isGuest, guestGenerationsUsed, incrementGeneration, canGenerate } = useAuth();
+  const { user, isGuest, guestGenerationsUsed, canGenerate, register } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  if (!user) {
+    register("guest@user.com", "tmp", "tmp")
+  }
 
   const getGenerationsLeft = () => {
     if (user) {
@@ -129,7 +135,7 @@ const AppPage = () => {
       });
     }
 
-    incrementGeneration();
+    //incrementGeneration();
     setIsGenerating(false);
   };
 
@@ -197,34 +203,7 @@ const AppPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-3 sm:py-4 flex justify-between items-center">
-          <Link to="/" className="inline-flex items-center space-x-2">
-            <ArrowLeft className="w-4 h-4" />
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Mail className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-lg sm:text-xl font-bold hidden sm:inline">MessageCraft</span>
-          </Link>
-          
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <Badge variant="outline" className="text-xs sm:text-sm px-2 sm:px-3">
-              <span className="hidden sm:inline">{getGenerationsLeft()} Crafts restants</span>
-              <span className="sm:hidden">{getGenerationsLeft()}</span>
-            </Badge>
-            
-            {user ? (
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/profile">Profil</Link>
-              </Button>
-            ) : (
-              <Button size="sm" asChild>
-                <Link to="/register">Créer un compte</Link>
-              </Button>
-            )}
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <div className="container mx-auto px-4 py-4 sm:py-8 max-w-4xl">
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
@@ -356,7 +335,7 @@ const AppPage = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
-                  <p className="font-medium">Cas d’usage avancés :</p>
+                  <p className="font-medium">Cas d'usage avancés :</p>
                   <ul className="space-y-1">
                     <li
                       className="cursor-pointer hover:underline"
@@ -400,6 +379,8 @@ const AppPage = () => {
             </Card>
           </div>
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

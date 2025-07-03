@@ -4,13 +4,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/components/AuthProvider";
-import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ForgotPassword from "./pages/ForgotPassword";
+// import Landing from "./pages/Landing";
+// import Login from "./pages/Login";
+// import Register from "./pages/Register";
+// import ForgotPassword from "./pages/ForgotPassword";
 import AppPage from "./pages/App";
-import ProfileSetup from "./pages/ProfileSetup";
-import Profile from "./pages/Profile";
+// import ProfileSetup from "./pages/ProfileSetup";
+// import Profile from "./pages/Profile";
+import Conditions from "./pages/Conditions";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<AppPage />} />
             <Route path="/error" element={<Error />} />
+            <Route path="/conditions" element={<Conditions />} />
             <Route path="*" element={<NotFound />} />
             {/*
             <Route path="/" element={<Landing />} />

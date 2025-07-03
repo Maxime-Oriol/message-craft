@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface User {
   id: string;
@@ -71,13 +72,14 @@ export const useAuthProvider = (): AuthContextType => {
   const register = async (email: string, password: string, name: string): Promise<boolean> => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    const id = uuidv4();
+
     const mockUser: User = {
-      id: '1',
+      id: id,
       email,
       name,
       generationsUsed: 0,
-      maxGenerations: 3,
+      maxGenerations: 100,
     };
     
     setUser(mockUser);
@@ -103,10 +105,13 @@ export const useAuthProvider = (): AuthContextType => {
   };
 
   const canGenerate = (): boolean => {
+    return true;
+    /*
     if (user) {
       return user.generationsUsed < user.maxGenerations;
     }
     return guestGenerationsUsed < 10;
+    */
   };
 
   return {

@@ -5,20 +5,20 @@ MessageCraft est une application web intelligente qui génère des messages pers
 ## 🚀 Roadmap MessageCraft
 
 ### ✅ V1 — Lancement initial (MVP)
-- Génération de messages à partir d’une intention et d’une plateforme cible
+- Génération de messages à partir d'une intention et d'une plateforme cible
 - Interface 100% gratuite, sans inscription
 - UUID utilisateur anonyme
 - Sauvegarde en base des intentions + messages générés
 
 ### 🔁 V2 — Style personnalisé automatique
 - Entraînement du modèle sur les messages ajustés par l'utilisateur
-- Génération plus fidèle au style personnel (via l’analyse des ajustements et variantes préférées)
+- Génération plus fidèle au style personnel (via l'analyse des ajustements et variantes préférées)
 - Feedback implicite (choix, ajustements, copier)
 
 ### 👤 V3 — Comptes utilisateurs
 - Création de compte simple (sans onboarding)
 - Limite de Crafts pour les utilisateurs anonymes
-- Migration automatique de l’historique via l’UUID anonyme
+- Migration automatique de l'historique via l'UUID anonyme
 
 ### 🧠 V4 — Onboarding léger
 - Mini onboarding pour capter des préférences de style et de ton
@@ -34,19 +34,19 @@ MessageCraft est une application web intelligente qui génère des messages pers
 
 ### 🔊 V7 — MessageCraft Voice
 - Génération de messages vocaux à partir des intentions
-- Fonctionnalité exclusive à l’offre premium
+- Fonctionnalité exclusive à l'offre premium
 
 ### 📎 V8 — Templates personnalisables
 - Création et réutilisation de modèles de messages favoris
-- Suggestions intelligentes de templates selon l’historique
+- Suggestions intelligentes de templates selon l'historique
 
 ### 🌐 V9 — Extension navigateur
 - Plugin Chrome/Edge/Brave pour générer directement dans Gmail, Slack, LinkedIn…
 - Détection automatique du contexte de rédaction
 
 ### 🧩 V10 — RAG (Retrieval-Augmented Generation)
-- Possibilité d’uploader des messages, documents, emails pour enrichir le contexte
-- Génération basée sur les connaissances personnelles de l’utilisateur
+- Possibilité d'uploader des messages, documents, emails pour enrichir le contexte
+- Génération basée sur les connaissances personnelles de l'utilisateur
 
 ---
 
