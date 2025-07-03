@@ -42,23 +42,23 @@ const Profile = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 py-3 sm:py-4 flex justify-between items-center">
           <Link to="/app" className="inline-flex items-center space-x-2">
             <ArrowLeft className="w-4 h-4" />
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Mail className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold">MessageCraft</span>
+            <span className="text-lg sm:text-xl font-bold hidden sm:inline">MessageCraft</span>
           </Link>
           
-          <Button variant="outline" onClick={logout}>
+          <Button variant="outline" size="sm" onClick={logout} className="text-sm">
             Se déconnecter
           </Button>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="grid md:grid-cols-2 gap-8">
+      <div className="container mx-auto px-4 py-4 sm:py-8 max-w-4xl">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
           {/* Profile Info */}
           <div className="space-y-6">
             <Card>

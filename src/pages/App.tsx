@@ -199,26 +199,27 @@ const AppPage = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 py-3 sm:py-4 flex justify-between items-center">
           <Link to="/" className="inline-flex items-center space-x-2">
             <ArrowLeft className="w-4 h-4" />
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Mail className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold">MessageCraft</span>
+            <span className="text-lg sm:text-xl font-bold hidden sm:inline">MessageCraft</span>
           </Link>
           
-          <div className="flex items-center space-x-4">
-            <Badge variant="outline">
-              {getGenerationsLeft()} générations restantes
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <Badge variant="outline" className="text-xs sm:text-sm px-2 sm:px-3">
+              <span className="hidden sm:inline">{getGenerationsLeft()} générations restantes</span>
+              <span className="sm:hidden">{getGenerationsLeft()}</span>
             </Badge>
             
             {user ? (
-              <Button variant="outline" asChild>
+              <Button variant="outline" size="sm" asChild>
                 <Link to="/profile">Profil</Link>
               </Button>
             ) : (
-              <Button asChild>
+              <Button size="sm" asChild>
                 <Link to="/register">Créer un compte</Link>
               </Button>
             )}
@@ -226,8 +227,8 @@ const AppPage = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="grid md:grid-cols-2 gap-8">
+      <div className="container mx-auto px-4 py-4 sm:py-8 max-w-4xl">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
           {/* Input Section */}
           <Card>
             <CardHeader>
@@ -245,18 +246,19 @@ const AppPage = () => {
                   value={intention}
                   onChange={(e) => setIntention(e.target.value)}
                   rows={3}
+                  className="min-h-[80px] text-base"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="platform">Plateforme cible</Label>
                 <Select value={platform} onValueChange={setPlatform}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 text-base">
                     <SelectValue placeholder="Choisissez une plateforme" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-background">
                     {platforms.map((p) => (
-                      <SelectItem key={p.value} value={p.value}>
+                      <SelectItem key={p.value} value={p.value} className="text-base py-3">
                         {p.label}
                       </SelectItem>
                     ))}
@@ -267,7 +269,7 @@ const AppPage = () => {
               <Button 
                 onClick={generateMessage}
                 disabled={!intention || !platform || isGenerating || !canGenerate()}
-                className="w-full"
+                className="w-full h-12 text-base"
               >
                 {isGenerating ? "Génération..." : "Générer le message"}
               </Button>
@@ -287,31 +289,31 @@ const AppPage = () => {
                   </p>
                   
                   <div className="space-y-3">
-                    <Card className="cursor-pointer hover:ring-2 hover:ring-primary" onClick={() => selectVariant('A')}>
-                      <CardContent className="p-4">
+                    <Card className="cursor-pointer hover:ring-2 hover:ring-primary transition-all" onClick={() => selectVariant('A')}>
+                      <CardContent className="p-3 sm:p-4">
                         <div className="flex justify-between items-start mb-2">
                           <Badge>Version A</Badge>
-                          <Button size="sm" variant="outline">Choisir</Button>
+                          <Button size="sm" variant="outline" className="text-xs">Choisir</Button>
                         </div>
-                        <p className="text-sm whitespace-pre-wrap">{variantA}</p>
+                        <p className="text-xs sm:text-sm whitespace-pre-wrap">{variantA}</p>
                       </CardContent>
                     </Card>
 
-                    <Card className="cursor-pointer hover:ring-2 hover:ring-primary" onClick={() => selectVariant('B')}>
-                      <CardContent className="p-4">
+                    <Card className="cursor-pointer hover:ring-2 hover:ring-primary transition-all" onClick={() => selectVariant('B')}>
+                      <CardContent className="p-3 sm:p-4">
                         <div className="flex justify-between items-start mb-2">
                           <Badge>Version B</Badge>
-                          <Button size="sm" variant="outline">Choisir</Button>
+                          <Button size="sm" variant="outline" className="text-xs">Choisir</Button>
                         </div>
-                        <p className="text-sm whitespace-pre-wrap">{variantB}</p>
+                        <p className="text-xs sm:text-sm whitespace-pre-wrap">{variantB}</p>
                       </CardContent>
                     </Card>
                   </div>
                 </div>
               ) : generatedMessage ? (
                 <div className="space-y-4">
-                  <div className="bg-muted/50 rounded-lg p-4">
-                    <p className="whitespace-pre-wrap text-sm">{generatedMessage.content}</p>
+                  <div className="bg-muted/50 rounded-lg p-3 sm:p-4">
+                    <p className="whitespace-pre-wrap text-sm sm:text-base">{generatedMessage.content}</p>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
@@ -322,13 +324,14 @@ const AppPage = () => {
                         size="sm"
                         onClick={() => adjustMessage(adj.id)}
                         disabled={isGenerating || generatedMessage.adjustments.includes(adj.id)}
+                        className="text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
                       >
                         {adj.label}
                       </Button>
                     ))}
                   </div>
 
-                  <Button onClick={copyToClipboard} className="w-full">
+                  <Button onClick={copyToClipboard} className="w-full h-12 text-base">
                     <Copy className="w-4 h-4 mr-2" />
                     Copier le message
                   </Button>
