@@ -2,12 +2,12 @@
 
 MessageCraft est une application web intelligente qui génère des messages personnalisés adaptés à différentes plateformes de communication (email, Slack, LinkedIn, SMS, etc.). L'IA analyse le style de communication de l'utilisateur pour créer des messages qui correspondent à sa personnalité et au contexte souhaité.
 
-## 🚀 Roadmap MessageCraft
+## 🚀 Roadmap MessageCraft et avancement
 
 ### ✅ V1 — Lancement initial (MVP)
 - Génération de messages à partir d'une intention et d'une plateforme cible
-- Interface 100% gratuite, sans inscription
-- UUID utilisateur anonyme
+✅ Interface 100% gratuite, sans inscription
+✅ UUID utilisateur anonyme
 - Sauvegarde en base des intentions + messages générés
 
 ### 🔁 V2 — Style personnalisé automatique
