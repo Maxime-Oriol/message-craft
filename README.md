@@ -24,7 +24,7 @@ MessageCraft est une application web intelligente qui génère des messages pers
 - Mini onboarding pour capter des préférences de style et de ton
 - Utilisation de ces données pour personnaliser la génération dès la première utilisation
 
-## V4.5 – Backoffice minimal (optionnel)
+### 🔙 V4.5 – Backoffice minimal (optionnel)
 Interface d'administration interne (non accessible publiquement) pour visualiser :
 - les crafts générés
 - les intentions
