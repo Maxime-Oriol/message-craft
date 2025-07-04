@@ -6,32 +6,72 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
+import { generateClientToken } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth"
 
 const ContactPage = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
   const [topic, setTopic] = useState("");
   const [other, setOther] = useState(null);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Sujet : ${topic}\nEmail : ${email}\nMessage : ${message}`);
+  const [message, setMessage] = useState("");
+  const { user } = useAuth()
+  
+  const cleanForm = () => {
     setEmail("");
-    setOther(null);
+    setOther("");
     setMessage("");
-    setTopic("");
+    setTopic("");   
   };
 
-  const onTopicChanged = (value) => {
-    setTopic(value);
-    if (value != "other") {
-        setOther(null);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    cleanForm();
+    const payload = {
+      userId: user.id,
+      email,
+      topic,
+      other: other === "" ? null : other,
+      message
     }
+    
+    const response = await fetch("http://localhost:4000/api/contact", {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "X-Craft-Auth": generateClientToken()
+      },
+      body: JSON.stringify(payload)
+    });
+    let result = null;
+    try {
+      result = await response.json(); // essaye de parser le corps, même s’il y a une erreur serveur
+    } catch (jsonError) {
+      console.warn("Impossible de parser le corps JSON :", jsonError);
+    }
+
+    if (response.ok) {
+      toast({
+        title: "Message envoyé !",
+        description: "Nous vous répondrons dans les plus brefs délais.",
+        variant: "success"
+      });
+    } else {
+      toast({
+        title: result.title || "Errur",
+        description: result.error || "Une erreur est survenue, veuillez réessayer plus tard",
+        variant: result.critical ? "destructive" : "success"
+      });
+      
+      console.error("Erreur API :", response.status, result.error);
+      throw new Error(`Erreur serveur : ${response.status}`);
+    }
+  
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header />a
 
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         <h1 className="text-2xl font-bold mb-6">Contact</h1>
@@ -52,7 +92,7 @@ const ContactPage = () => {
           <div className="space-y-2">
             <Label htmlFor="topic">Sujet</Label>
             <Select value={topic} onValueChange={setTopic} required>
-              <SelectTrigger className="h-12">
+              <SelectTrigger className="h-12" tabIndex={0}>
                 <SelectValue placeholder="Choisissez un sujet" />
               </SelectTrigger>
               <SelectContent>
@@ -69,7 +109,7 @@ const ContactPage = () => {
                     type="text"
                     placeholder="Précisez..."
                     value={other}
-                    onChange={(e) => onTopicChanged(e.target.value)}
+                    onChange={(e) => setOther(e.target.value)}
                 />
             }
           </div>

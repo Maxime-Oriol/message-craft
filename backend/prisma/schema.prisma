@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -16,6 +15,7 @@ datasource db {
 
 model ContactMessage {
   id        String   @id @default(uuid())
+  userId    String
   email     String
   topic     String
   other     String?
