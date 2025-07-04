@@ -41,13 +41,8 @@ const Error = () => {
 
             <div className="text-center pt-4 border-t">
               <p className="text-xs text-muted-foreground">
-                Si le problème persiste, contactez-nous à{" "}
-                <a 
-                  href="mailto:support@messagecraft.ai" 
-                  className="text-primary hover:underline"
-                >
-                  support@messagecraft.ai
-                </a>
+                Si le problème persiste, contactez-nous en utilisant{" "}
+                <Link to="/contact" className="text-primary hover:underline">le formulaire de contact</Link>
               </p>
             </div>
           </CardContent>

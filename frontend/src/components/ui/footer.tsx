@@ -14,7 +14,7 @@ export const Footer = () => {
             </div>
             <div className="flex space-x-6 text-sm text-muted-foreground">
               <Link to="/conditions" className="hover:text-foreground">Conditions d'utilisation</Link>
-              <a href="#" className="hover:text-foreground">Contact</a>
+              <Link to="/contact" className="hover:text-foreground">Contact</Link>
             </div>
           </div>
         </div>

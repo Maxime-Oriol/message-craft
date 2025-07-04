@@ -12,6 +12,7 @@ import AppPage from "./pages/App";
 // import ProfileSetup from "./pages/ProfileSetup";
 // import Profile from "./pages/Profile";
 import Conditions from "./pages/Conditions";
+import Contact from "./pages/Contact";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 
@@ -26,8 +27,9 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<AppPage />} />
-            <Route path="/error" element={<Error />} />
             <Route path="/conditions" element={<Conditions />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/error" element={<Error />} />
             <Route path="*" element={<NotFound />} />
             {/*
             <Route path="/" element={<Landing />} />
