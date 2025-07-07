@@ -48,3 +48,11 @@ model llm_dataset {
 
   craft_message         craft_message @relation(fields: [message_id], references: [id], onDelete: Cascade)
 }
+
+model llm_model_version {
+  id                  String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  model_name          String
+  trained_at          DateTime @default(now())
+  data_count          Int
+  score_validation    Float
+}
