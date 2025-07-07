@@ -15,7 +15,8 @@ const ContactPage = () => {
   const [topic, setTopic] = useState("");
   const [other, setOther] = useState(null);
   const [message, setMessage] = useState("");
-  const { user } = useAuth()
+  const { user, register } = useAuth();
+  const [isSending, setIsSending] = useState(false);
   
   const cleanForm = () => {
     setEmail("");
@@ -23,6 +24,10 @@ const ContactPage = () => {
     setMessage("");
     setTopic("");   
   };
+
+  if (!user || user.id == null) {
+    register("guest@user.com", "tmp", "tmp")
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,8 +39,8 @@ const ContactPage = () => {
       other: other === "" ? null : other,
       message
     }
-    
-    const response = await fetch("http://localhost:4000/api/contact", {
+    setIsSending(true)
+    const response = await fetch("http://127.0.0.1:4000/api/contact", {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -48,6 +53,8 @@ const ContactPage = () => {
       result = await response.json(); // essaye de parser le corps, même s’il y a une erreur serveur
     } catch (jsonError) {
       console.warn("Impossible de parser le corps JSON :", jsonError);
+    } finally {
+      setIsSending(false)
     }
 
     if (response.ok) {
@@ -126,7 +133,10 @@ const ContactPage = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full h-12 text-base">
+          <Button 
+            type="submit" 
+            className="w-full h-12 text-base"
+            disabled={isSending}>
             Envoyer
           </Button>
         </form>

@@ -1,0 +1,50 @@
+{"input": "platform: instagram; intent: annoncer une absence ou un retard", "output": "Bon week-end à tous, reposez-vous bien !"}
+{"input": "platform: sms; intent: annoncer une mauvaise nouvelle de manière diplomate", "output": "On lâche rien, l'objectif est proche 💪"}
+{"input": "platform: corporate; intent: demander un retour sur un document", "output": "Bravo pour cette super présentation, c'était top !"}
+{"input": "platform: email; intent: faire une recommandation professionnelle", "output": "On organise un afterwork jeudi, tu viens ?"}
+{"input": "platform: email; intent: reprendre contact après une longue période", "output": "Trop content de faire partie de cette nouvelle aventure avec vous 🙌"}
+{"input": "platform: blog; intent: féliciter un collaborateur pour une réussite", "output": "Merci pour ton retour, je vais en tenir compte 🙏"}
+{"input": "platform: instagram; intent: proposer un rendez-vous", "output": "Qu'en pensez-vous : l'IA va-t-elle révolutionner notre métier ?"}
+{"input": "platform: instagram; intent: souhaiter un bon week-end", "output": "À ta place, je testerais cette solution, elle m'a bien aidé !"}
+{"input": "platform: twitter; intent: annoncer une absence ou un retard", "output": "Merci pour ton retour, je vais en tenir compte 🙏"}
+{"input": "platform: linkedin; intent: proposer un rendez-vous", "output": "Dispo pour un call demain 14h ?"}
+{"input": "platform: sms; intent: reprendre contact après une longue période", "output": "On organise un afterwork jeudi, tu viens ?"}
+{"input": "platform: email; intent: donner un conseil amical", "output": "Dispo pour un call demain 14h ?"}
+{"input": "platform: instagram; intent: motiver son équipe", "output": "Merci pour l'entretien d'hier, très motivé à vous rejoindre !"}
+{"input": "platform: linkedin; intent: souhaiter un bon week-end", "output": "Je me permets de revenir vers vous concernant notre dernière proposition."}
+{"input": "platform: linkedin; intent: exprimer son enthousiasme pour un projet", "output": "Merci pour ton retour, je vais en tenir compte 🙏"}
+{"input": "platform: linkedin; intent: relancer un client", "output": "Bon week-end à tous, reposez-vous bien !"}
+{"input": "platform: sms; intent: répondre à une critique de manière posée", "output": "Merci encore pour ton coup de main, ça m'a sauvé la mise !"}
+{"input": "platform: twitter; intent: souhaiter un bon week-end", "output": "On organise un afterwork jeudi, tu viens ?"}
+{"input": "platform: email; intent: féliciter un collaborateur pour une réussite", "output": "Trop content de faire partie de cette nouvelle aventure avec vous 🙌"}
+{"input": "platform: sms; intent: répondre à une critique de manière posée", "output": "Bon week-end à tous, reposez-vous bien !"}
+{"input": "platform: email; intent: exprimer son enthousiasme pour un projet", "output": "Bravo pour cette super présentation, c'était top !"}
+{"input": "platform: blog; intent: inviter à un événement", "output": "Je recommande vivement le travail de [Nom], super pro 👏"}
+{"input": "platform: twitter; intent: souhaiter un bon week-end", "output": "Bravo pour cette super présentation, c'était top !"}
+{"input": "platform: sms; intent: proposer un rendez-vous", "output": "Je me permets de revenir vers vous concernant notre dernière proposition."}
+{"input": "platform: instagram; intent: inviter à un événement", "output": "Tu as eu le temps de jeter un œil au doc ?"}
+{"input": "platform: email; intent: faire une recommandation professionnelle", "output": "Ça fait un bail ! On prend un café bientôt ?"}
+{"input": "platform: sms; intent: proposer un rendez-vous", "output": "Ça fait un bail ! On prend un café bientôt ?"}
+{"input": "platform: corporate; intent: annoncer une mauvaise nouvelle de manière diplomate", "output": "Dispo pour un call demain 14h ?"}
+{"input": "platform: sms; intent: demander un retour sur un document", "output": "Je dois t'annoncer un changement important, on en parle ?"}
+{"input": "platform: corporate; intent: exprimer son enthousiasme pour un projet", "output": "Merci encore pour ton coup de main, ça m'a sauvé la mise !"}
+{"input": "platform: linkedin; intent: proposer un rendez-vous", "output": "On lâche rien, l'objectif est proche 💪"}
+{"input": "platform: sms; intent: faire une recommandation professionnelle", "output": "Nouveau produit en ligne 🚀 N'hésitez pas à jeter un coup d'œil !"}
+{"input": "platform: email; intent: remercier pour une opportunité d'entretien", "output": "Merci pour l'entretien d'hier, très motivé à vous rejoindre !"}
+{"input": "platform: corporate; intent: lancer une discussion sur un sujet d'actualité", "output": "Je dois t'annoncer un changement important, on en parle ?"}
+{"input": "platform: twitter; intent: remercier pour une opportunité d'entretien", "output": "Trop content de faire partie de cette nouvelle aventure avec vous 🙌"}
+{"input": "platform: sms; intent: féliciter un collaborateur pour une réussite", "output": "Je recommande vivement le travail de [Nom], super pro 👏"}
+{"input": "platform: twitter; intent: remercier pour une opportunité d'entretien", "output": "Trop content de faire partie de cette nouvelle aventure avec vous 🙌"}
+{"input": "platform: twitter; intent: motiver son équipe", "output": "Merci pour ton retour, je vais en tenir compte 🙏"}
+{"input": "platform: sms; intent: remercier pour une opportunité d'entretien", "output": "Ça fait un bail ! On prend un café bientôt ?"}
+{"input": "platform: email; intent: donner un conseil amical", "output": "Nouveau produit en ligne 🚀 N'hésitez pas à jeter un coup d'œil !"}
+{"input": "platform: email; intent: demander un retour sur un document", "output": "Merci pour l'entretien d'hier, très motivé à vous rejoindre !"}
+{"input": "platform: instagram; intent: proposer un rendez-vous", "output": "Nouveau produit en ligne 🚀 N'hésitez pas à jeter un coup d'œil !"}
+{"input": "platform: instagram; intent: donner un conseil amical", "output": "À ta place, je testerais cette solution, elle m'a bien aidé !"}
+{"input": "platform: email; intent: motiver son équipe", "output": "Je me permets de revenir vers vous concernant notre dernière proposition."}
+{"input": "platform: email; intent: faire une recommandation professionnelle", "output": "On lâche rien, l'objectif est proche 💪"}
+{"input": "platform: linkedin; intent: souhaiter un bon week-end", "output": "Merci pour ton retour, je vais en tenir compte 🙏"}
+{"input": "platform: twitter; intent: annoncer une absence ou un retard", "output": "Des retours sur la maquette ? Hâte d'avoir ton avis !"}
+{"input": "platform: linkedin; intent: féliciter un collaborateur pour une réussite", "output": "Qu'en pensez-vous : l'IA va-t-elle révolutionner notre métier ?"}
+{"input": "platform: linkedin; intent: remercier pour une opportunité d'entretien", "output": "À ta place, je testerais cette solution, elle m'a bien aidé !"}
+{"input": "platform: sms; intent: souhaiter un bon week-end", "output": "Nouveau produit en ligne 🚀 N'hésitez pas à jeter un coup d'œil !"}

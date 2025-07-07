@@ -14,11 +14,21 @@ datasource db {
 }
 
 model ContactMessage {
-  id        String   @id @default(uuid())
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId    String
   email     String
   topic     String
   other     String?
   message   String
   createdAt DateTime @default(now())
+}
+
+model CraftMessage {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String
+  platform   String
+  intent     String
+  generated  String   // le message généré par le modèle
+  message    String   // le message final modifié par l'utilisateur
+  createdAt  DateTime @default(now())
 }

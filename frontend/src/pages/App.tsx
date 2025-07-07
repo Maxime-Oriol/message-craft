@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Header } from "@/components/ui/header"
 import { Footer } from "@/components/ui/footer"
+import { generateClientToken } from "@/lib/utils"
 
 const platforms = [
   { value: "email", label: "Email" },
@@ -19,7 +20,7 @@ const platforms = [
   { value: "instagram", label: "Instagram" },
   { value: "twitter", label: "Twitter/ X" },
   { value: "blog", label: "Article de blog" },
-  { value: "whatsapp", label: "WhatsApp" },
+  { value: "sms", label: "Whatsapp - SMS - Line - Telegram..." },
   { value: "sms", label: "SMS" }
 ];
 
@@ -51,7 +52,7 @@ const AppPage = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  if (!user) {
+  if (!user || user.id == null) {
     register("guest@user.com", "tmp", "tmp")
   }
 
@@ -62,67 +63,55 @@ const AppPage = () => {
     return 10 - guestGenerationsUsed;
   };
 
-  const generateMessage = async () => {
-    if (!canGenerate()) {
-      if (isGuest) {
-        toast({
-          title: "Limite atteinte",
-          description: "Créez un compte pour continuer à utiliser MessageCraft",
-        });
-        navigate("/register");
-        return;
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Limite quotidienne atteinte",
-          description: "Revenez demain pour 3 nouveaux Crafts",
-        });
-        return;
-      }
-    }
-
+  const generateMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsGenerating(true);
     setShowVariants(false);
 
-    // Simulate AI generation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const mockMessages = {
-      email: {
-        resignation: "Objet : Démission\n\nMadame, Monsieur,\n\nJe vous informe par la présente de ma décision de démissionner de mon poste de [votre poste] au sein de [nom de l'entreprise].\n\nMa dernière journée de travail sera le [date], respectant ainsi le préavis de [durée] requis par mon contrat.\n\nJe vous remercie pour les opportunités de développement professionnel que vous m'avez offertes.\n\nCordialement,\n[Votre nom]",
-        meeting: "Objet : Demande de rendez-vous\n\nBonjour [Nom],\n\nJ'aimerais planifier un entretien avec vous pour discuter de [sujet]. Seriez-vous disponible la semaine prochaine ?\n\nMerci pour votre temps.\n\nCordialement,\n[Votre nom]"
-      },
-      slack: {
-        reminder: "👋 Salut ! Petit rappel concernant [sujet]. Tu pourrais jeter un œil quand tu as un moment ? Merci ! 🙏",
-        update: "📄 Update : J'ai terminé [tâche]. Tout est prêt pour la prochaine étape. Dites-moi si vous avez des questions ! ✅"
-      },
-      linkedin: {
-        recruiter: "Bonjour [Nom],\n\nJe suis très intéressé(e) par les opportunités dans votre entreprise, particulièrement dans le domaine de [domaine]. Mon profil pourrait-il correspondre à vos recherches actuelles ?\n\nJe serais ravi(e) d'échanger avec vous.\n\nBien cordialement,\n[Votre nom]",
-        network: "Bonjour [Nom],\n\nJ'ai remarqué votre parcours impressionnant chez [entreprise]. J'aimerais élargir mon réseau professionnel et échanger sur nos expériences dans [secteur].\n\nSeriez-vous ouvert(e) à un échange ?\n\nCordialement,\n[Votre nom]"
-      }
-    };
-
-    // Simple AI logic for demo
-    let message = "";
-    const intentionLower = intention.toLowerCase();
-    
-    if (intentionLower.includes("démission") || intentionLower.includes("resignation")) {
-      message = mockMessages.email.resignation;
-    } else if (intentionLower.includes("rappel") || intentionLower.includes("reminder")) {
-      message = mockMessages.slack.reminder;
-    } else if (intentionLower.includes("recruteur") || intentionLower.includes("recruiter")) {
-      message = mockMessages.linkedin.recruiter;
-    } else if (platform === "email") {
-      message = mockMessages.email.meeting;
-    } else if (platform === "slack") {
-      message = mockMessages.slack.update;
-    } else if (platform === "linkedin") {
-      message = mockMessages.linkedin.network;
-    } else {
-      message = `Message généré pour "${intention}" sur ${platforms.find(p => p.value === platform)?.label}:\n\n[Message personnalisé basé sur votre intention et adapté à la plateforme sélectionnée]`;
+    const payload = {
+      platform,
+      intention,
+      adjustments
     }
 
-    // Check if we should show variants (ambiguous case)
+    const response = await fetch("http://127.0.0.1:4000/api/message", {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "X-Craft-Auth": generateClientToken()
+      },
+      body: JSON.stringify(payload)
+    });
+
+    let result = null;
+    try {
+      result = await response.json(); // essaye de parser le corps, même s’il y a une erreur serveur
+    } catch (jsonError) {
+      console.warn("Impossible de parser le corps JSON :", jsonError);
+    }
+
+    if (!response.ok) {
+      setShowVariants(false);
+      setIsGenerating(false)
+      setGeneratedMessage({
+      content: null,
+      platform,
+      adjustments: []
+      })
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la rédaction du craft",
+        variant: "destructive"
+      });
+    }
+
+    setGeneratedMessage({
+      
+      content: result.message,
+      platform,
+      adjustments: []
+    });
+    /*
     if (intentionLower.includes("professionnel") && platform === "email") {
       setVariantA(message);
       setVariantB(message.replace("Madame, Monsieur,", "Bonjour,").replace("Cordialement,", "Bonne journée,"));
@@ -134,8 +123,7 @@ const AppPage = () => {
         adjustments: []
       });
     }
-
-    //incrementGeneration();
+    */
     setIsGenerating(false);
   };
 
@@ -240,7 +228,7 @@ const AppPage = () => {
                 </p>
                 <Textarea
                   id="intention"
-                  placeholder="Ex: Proposer une offre d'emploi, Demander à Camille si elle a corrigé le document, Résiliation salle de sport..."
+                  placeholder="Explique moi ce que je dois rédiger..."
                   value={intention}
                   onChange={(e) => setIntention(e.target.value)}
                   rows={3}
