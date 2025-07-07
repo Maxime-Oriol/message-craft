@@ -13,22 +13,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ContactMessage {
+model contact_message {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String
+  user_id    String
   email     String
   topic     String
   other     String?
   message   String
-  createdAt DateTime @default(now())
+  created_at DateTime @default(now())
 }
 
-model CraftMessage {
+model craft_message {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId     String
+  user_id     String
   platform   String
   intent     String
   generated  String   // le message généré par le modèle
   message    String?   // le message final modifié par l'utilisateur
-  createdAt  DateTime @default(now())
+  created_at  DateTime @default(now())
+
+  llm_datasets llm_dataset[]
+}
+
+model llm_dataset {
+  id                    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  message_id            String @db.Uuid
+  similarity_cosine     Float
+  distance_levenshtein  Int
+  score_reliability     Float
+  pii_message           String?
+  validated             Boolean @default(false)
+  needs_validation      Boolean @default(true)
+  created_at            DateTime @default(now())
+
+  craft_message         craft_message @relation(fields: [message_id], references: [id], onDelete: Cascade)
 }
