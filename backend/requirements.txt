@@ -1,6 +1,11 @@
+# pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu -> Pour installer MPS pour inférence sur GPU
+
 python-dotenv
 fastapi 
 uvicorn[standard] 
 pydantic
 pydantic[email]
-psycopg
+psycopg2-binary
+torch
+torchvision
+torchaudio

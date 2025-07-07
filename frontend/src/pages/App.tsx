@@ -45,7 +45,7 @@ const AppPage = () => {
   const [showVariants, setShowVariants] = useState(false);
   const [variantA, setVariantA] = useState("");
   const [variantB, setVariantB] = useState("");
-  
+    
   const { user, isGuest, guestGenerationsUsed, canGenerate, register } = useAuth();
   const { toast } = useToast();
 
@@ -72,8 +72,8 @@ const AppPage = () => {
       adjustments
     }
 
-    const response = await fetch("http://127.0.0.1:4000/api/message", {
-      method: 'POST',
+    const response = await fetch("/api/message", {
+    method: 'POST',
       headers: {
         "Content-Type": "application/json",
         "X-Craft-Auth": generateClientToken()
