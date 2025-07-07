@@ -30,6 +30,7 @@ model craft_message {
   intent     String
   generated  String   // le message généré par le modèle
   message    String?   // le message final modifié par l'utilisateur
+  transferred_to_dataset  Boolean @default(false)
   created_at  DateTime @default(now())
 
   llm_datasets llm_dataset[]
@@ -39,8 +40,9 @@ model llm_dataset {
   id                    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   message_id            String @db.Uuid
   similarity_cosine     Float
-  distance_levenshtein  Int
-  score_reliability     Float
+  distance_levenshtein  Float
+  score_reliability     Float?
+  pii_factor            Float
   pii_message           String?
   validated             Boolean @default(false)
   needs_validation      Boolean @default(true)

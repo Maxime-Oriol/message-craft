@@ -1,15 +1,17 @@
 from datetime import datetime
-from app.db.orm import ORM, Table
+from app.db.orm import ORM
 
-class ContactModel(ORM):
-    _name = "contact_message"
+class DatasetModel(ORM):
+    _name = "llm_dataset"
 
     id:str
-    user_id:str
-    email:str
-    topic:str
-    other:str|None
-    message:str
+    message_id:str
+    similarity_cosine:float
+    distance_levenshtein:float
+    score_reliability:float
+    pii_message:str|None
+    validated:bool = False
+    needs_validation:bool = True
     created_at:datetime
 
     def save(self):

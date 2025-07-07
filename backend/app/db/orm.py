@@ -5,10 +5,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Table:
-    CONTACT = "contact_messages"
-    USERS = "users"
+    CONTACT = "contact_message"
+    MESSAGE = "craft_message"
+    LLM_DATASET = "llm_dataset"
+    LLM_MODEL = "llm_model_version"
 
 class ORM:
+    id:str
     _select:str = "*"
     _from:str
     _name:str
@@ -66,9 +69,9 @@ class ORM:
 
     def query(self, raw_sql=None):
         if raw_sql:
-            with self.conn.cursor() as cur:
-                cur.execute(raw_sql)
-                return cur.fetchall()
+            self.cursor.execute(raw_sql)
+            rows = self.cursor.fetchall()
+            return [self.__class__.from_dict(dict(zip([desc[0] for desc in self.cursor.description], row))) for row in rows]
 
         if not self._from:
             raise ValueError("FROM clause is missing")
@@ -83,9 +86,13 @@ class ORM:
             query += f" LIMIT {self._limit}"
 
         self.cursor.execute(query)
-        result = self.cursor.fetchall()
+        rows = self.cursor.fetchall()
+        columns = [desc[0] for desc in self.cursor.description]
+
         self._reset_query()
-        return result
+
+        results = [self.__class__.from_dict(dict(zip(columns, row))) for row in rows]
+        return results[0] if len(results) == 1 else results
     
     def insert(self, data:dict):
         data.pop("id", None)
@@ -103,3 +110,19 @@ class ORM:
             columns = [desc[0] for desc in self.cursor.description]
             return dict(zip(columns, row))
         return None
+
+    
+    def update(self, field: str, value):
+        query = f'UPDATE "{self._name}" SET "{field}" = %s WHERE id = %s RETURNING *'
+        self.cursor.execute(query, (value, self.id))
+        self.conn.commit()
+        row = self.cursor.fetchone()
+        if row:
+            columns = [desc[0] for desc in self.cursor.description]
+            for col, val in zip(columns, row):
+                setattr(self, col, val)
+        return self
+    
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(**data)

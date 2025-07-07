@@ -7,4 +7,4 @@ class ContactForm(BaseModel):
     topic: str
     other: str | None = None
     message: str
-    userId: str
+    user_id: str

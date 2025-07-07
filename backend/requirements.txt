@@ -9,3 +9,7 @@ psycopg2-binary
 torch
 torchvision
 torchaudio
+scikit-learn
+numpy
+python-Levenshtein
+lightgbm

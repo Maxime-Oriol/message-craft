@@ -2,10 +2,10 @@ from datetime import datetime
 from app.db.orm import ORM, Table
 
 class MessageModel(ORM):
-    _name = "CraftMessage"
+    _name = "craft_message"
 
     id:str
-    userId:str
+    user_id:str
     platform:str
     intent:str
     generated:str
@@ -21,3 +21,8 @@ class MessageModel(ORM):
                 if value:
                     obj[attr] = value
         return self.insert(obj)
+    
+    @classmethod
+    def get_non_transferred(cls) -> list["MessageModel"]:
+        results = cls().where("transferred_to_dataset = FALSE").query()
+        return [cls.from_dict(row) for row in results]

@@ -32,7 +32,7 @@ const ContactPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload = {
-      userId: user.id,
+      user_id: user.id,
       email,
       topic,
       other: other === "" ? null : other,

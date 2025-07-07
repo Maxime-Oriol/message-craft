@@ -10,7 +10,7 @@ async def generate_message(message: MessageSchema):
     # Pour l’instant, on se contente de "simuler" la génération
     generated = message.intent.upper()
     data = message.__dict__
-    data["userId"] = data.pop("user_id")
+    data.pop("user_id")
     data["generated"] = generated
     model = MessageModel(
         **data
