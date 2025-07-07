@@ -10,10 +10,10 @@ class ContactModel(ORM):
     topic:str
     other:str|None
     message:str
-    createdAt:datetime
+    created_at:datetime
 
     def save(self):
-        self.createdAt = datetime.now()
+        self.created_at = datetime.now()
         obj = {}
         for attr in self.__annotations__:
             if not attr.startswith("_"):
