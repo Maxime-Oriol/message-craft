@@ -29,6 +29,6 @@ model CraftMessage {
   platform   String
   intent     String
   generated  String   // le message généré par le modèle
-  message    String   // le message final modifié par l'utilisateur
+  message    String?   // le message final modifié par l'utilisateur
   createdAt  DateTime @default(now())
 }

@@ -1,18 +1,21 @@
 from fastapi import APIRouter, Depends, Request
 from app.schemas.message import MessageSchema
 from app.services.security import check_security
-#from app.models.message import save_message
+from app.models.message_model import MessageModel
 
 router = APIRouter()
 
 @router.post("/", dependencies=[Depends(check_security)])
-async def generate_message(message: MessageSchema, request: Request):
+async def generate_message(message: MessageSchema):
     # Pour l’instant, on se contente de "simuler" la génération
-    generated = message.message.upper()
-
-    # Sauvegarde (à adapter avec ton ORM)
-    saved = {}
-    # saved = await save_message(**message.dict())
+    generated = message.intent.upper()
+    data = message.__dict__
+    data["userId"] = data.pop("user_id")
+    data["generated"] = generated
+    model = MessageModel(
+        **data
+    )
+    saved = model.save()
 
     return {
         "success": True,

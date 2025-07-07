@@ -24,7 +24,7 @@ async def handle_contact_form(form: ContactForm):
 
     try:
         model = ContactModel(
-            userId="value to complete",
+            userId=form.userId,
             email=form.email,
             topic=form.topic,
             other=form.other,

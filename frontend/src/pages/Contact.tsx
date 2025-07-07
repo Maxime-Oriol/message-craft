@@ -13,7 +13,7 @@ import { useAuth } from "@/hooks/useAuth"
 const ContactPage = () => {
   const [email, setEmail] = useState("");
   const [topic, setTopic] = useState("");
-  const [other, setOther] = useState(null);
+  const [other, setOther] = useState("");
   const [message, setMessage] = useState("");
   const { user, register } = useAuth();
   const [isSending, setIsSending] = useState(false);
@@ -31,7 +31,6 @@ const ContactPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    cleanForm();
     const payload = {
       userId: user.id,
       email,
@@ -63,6 +62,7 @@ const ContactPage = () => {
         description: "Nous vous répondrons dans les plus brefs délais.",
         variant: "success"
       });
+      cleanForm();
     } else {
       toast({
         title: result.title || "Errur",
@@ -78,7 +78,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />a
+      <Header />
 
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         <h1 className="text-2xl font-bold mb-6">Contact</h1>

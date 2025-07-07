@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Mail, Copy, Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Header } from "@/components/ui/header"
@@ -21,7 +20,6 @@ const platforms = [
   { value: "twitter", label: "Twitter/ X" },
   { value: "blog", label: "Article de blog" },
   { value: "sms", label: "Whatsapp - SMS - Line - Telegram..." },
-  { value: "sms", label: "SMS" }
 ];
 
 const adjustments = [
@@ -50,7 +48,6 @@ const AppPage = () => {
   
   const { user, isGuest, guestGenerationsUsed, canGenerate, register } = useAuth();
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   if (!user || user.id == null) {
     register("guest@user.com", "tmp", "tmp")
@@ -67,10 +64,11 @@ const AppPage = () => {
     e.preventDefault();
     setIsGenerating(true);
     setShowVariants(false);
-
+    
     const payload = {
+      user_id:user.id,
       platform,
-      intention,
+      intent: intention,
       adjustments
     }
 
