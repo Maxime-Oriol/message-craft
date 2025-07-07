@@ -17,7 +17,7 @@ class ORM:
     _limit:int|None = None
 
     def __init__(self, **kwargs):
-        self.conn = psycopg.connect(
+        self.conn = psycopg2.connect(
             host=os.getenv("POSTGRES_HOST"),
             port=os.getenv("POSTGRES_PORT"),
             dbname=os.getenv("POSTGRES_DB"),
