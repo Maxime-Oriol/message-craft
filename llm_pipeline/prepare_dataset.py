@@ -2,33 +2,28 @@ from backend.app.models.message_model import MessageModel
 from backend.app.models.dataset_model import DatasetModel
 from sim_cosine import calculate_cosine
 from dist_levenshtein import calculate_levenshtein
-
-class DatasetBuilder:
-
-    def prepare_data(self):
-        messages = MessageModel.get_non_transferred()
-
-        for message in messages:
-            cosine = calculate_cosine(message)
-            levenshtein = calculate_levenshtein(message)
-
-            model = DatasetModel(
-                message_id=message.id,
-                similarity_cosine=cosine,
-                distance_levenshtein=levenshtein
-                score_reliability:float
-                
+from classify_pii import mask_pii_llm
+from utils import get_logger
 
 
-    
-    pii_message:str|None
-    validated:bool = False
-    needs_validation:bool = True
-    created_at:datetime
+def prepare_data():
+    messages = MessageModel.get_non_transferred()
+    logger = get_logger("prepare_dataset")
 
+    for message in messages:
+        cosine = calculate_cosine(message)
+        levenshtein = calculate_levenshtein(message)
+        pii_message, pii_factor = mask_pii_llm(message)
 
-
-
-            )
-            model.save()
-
+        model = DatasetModel(
+            message_id=message.id,
+            similarity_cosine=cosine,
+            distance_levenshtein=levenshtein,
+            pii_factor = pii_factor,
+            pii_message = pii_message
+        )
+        if model.save():
+            MessageModel(id= message.id).update("transferred_to_dataset", True)
+            logger.info("La ligne MessageCraft.id = {message.id} a été transférée")
+        else:
+            logger.error("La ligne MessageCraft.id = {message.id} n'a pas pu être transférée")

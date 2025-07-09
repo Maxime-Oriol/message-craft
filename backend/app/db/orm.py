@@ -111,9 +111,33 @@ class ORM:
             return dict(zip(columns, row))
         return None
 
-    
-    def update(self, field: str, value):
-        query = f'UPDATE "{self._name}" SET "{field}" = %s WHERE id = %s RETURNING *'
+    def update_all(self):
+        keys = [key for key in self.__annotations__ if not key.startswith("_") and key != "id"]
+        values = [getattr(self, key) for key in keys]
+        update_text = [f'"{key}" = %s' for key in keys]
+
+        query = f"""
+            UPDATE "{self._from}" 
+            SET {", ".join(update_text)}
+            WHERE id = %s
+            RETURNING *
+        """
+
+        self.cursor.execute(query, values + [self.id])
+        self.conn.commit()
+        row = self.cursor.fetchone()
+        if row:
+            columns = [desc[0] for desc in self.cursor.description]
+            for col, val in zip(columns, row):
+                setattr(self, col, val)
+            return self
+        return None
+
+    def update(self, field: str|None = None, value = None):
+        if not field:
+            return self.update_all()
+        
+        query = f'UPDATE "{self._from}" SET "{field}" = %s WHERE id = %s RETURNING *'
         self.cursor.execute(query, (value, self.id))
         self.conn.commit()
         row = self.cursor.fetchone()

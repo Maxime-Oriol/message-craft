@@ -23,6 +23,8 @@ class MessageModel(ORM):
         return self.insert(obj)
     
     @classmethod
-    def get_non_transferred(cls) -> list["MessageModel"]:
+    def get_non_transferred(cls) -> list:
         results = cls().where("transferred_to_dataset = FALSE").query()
+        if not isinstance(results, list):
+            results = [results]
         return [cls.from_dict(row) for row in results]

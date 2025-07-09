@@ -8,7 +8,8 @@ class DatasetModel(ORM):
     message_id:str
     similarity_cosine:float
     distance_levenshtein:float
-    score_reliability:float
+    score_reliability:float|None = None
+    pii_factor:float
     pii_message:str|None
     validated:bool = False
     needs_validation:bool = True
