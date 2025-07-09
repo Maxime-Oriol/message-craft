@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from app.schemas.contact import ContactForm
-from app.services.mailer import send_email
-from app.models.contact_model import ContactModel
-from app.services.security import check_security
+from backend.app.schemas.contact import ContactForm
+from backend.app.services.mailer import send_email
+from backend.app.models.contact_model import ContactModel
+from backend.app.services.security import check_security
 import os
 
 router = APIRouter()

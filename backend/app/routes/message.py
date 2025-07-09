@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request
-from app.schemas.message import MessageSchema
-from app.services.security import check_security
-from app.models.message_model import MessageModel
+from backend.app.schemas.message import MessageSchema
+from backend.app.services.security import check_security
+from backend.app.models.message_model import MessageModel
 
 router = APIRouter()
 

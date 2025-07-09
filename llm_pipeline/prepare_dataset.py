@@ -1,10 +1,12 @@
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from backend.app.models.message_model import MessageModel
 from backend.app.models.dataset_model import DatasetModel
 from sim_cosine import calculate_cosine
 from dist_levenshtein import calculate_levenshtein
 from classify_pii import mask_pii_llm
 from utils import get_logger
-
 
 def prepare_data():
     messages = MessageModel.get_non_transferred()

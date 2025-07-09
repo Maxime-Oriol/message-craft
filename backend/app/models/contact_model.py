@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.db.orm import ORM, Table
+from backend.app.db.orm import ORM, Table
 
 class ContactModel(ORM):
     _name = "contact_message"
