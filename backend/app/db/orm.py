@@ -68,16 +68,19 @@ class ORM:
         return self
 
     def query(self, raw_sql=None):
+        def row_to_dict(columns, row):
+            return dict(zip(columns, row))
+
         if raw_sql:
             self.cursor.execute(raw_sql)
             rows = self.cursor.fetchall()
-            return [self.__class__.from_dict(dict(zip([desc[0] for desc in self.cursor.description], row))) for row in rows]
+            columns = [desc[0] for desc in self.cursor.description]
+            return [row_to_dict(columns, row) for row in rows]
 
         if not self._from:
             raise ValueError("FROM clause is missing")
 
         query = f"SELECT {self._select} FROM {self._from}"
-        
         if self._where:
             query += f" WHERE {self._where}"
         if self._order_by:
@@ -91,8 +94,7 @@ class ORM:
 
         self._reset_query()
 
-        results = [self.__class__.from_dict(dict(zip(columns, row))) for row in rows]
-        return results[0] if len(results) == 1 else results
+        return [row_to_dict(columns, row) for row in rows]
     
     def insert(self, data:dict):
         data.pop("id", None)

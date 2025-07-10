@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { Mail } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/useAuth"
 
 
 export const Header = () => {
+
+    const { user } = useAuth()
+
     return (
         <header className="border-b">
             <div className="container mx-auto px-4 py-3 sm:py-4 flex justify-between items-center">
@@ -13,13 +18,16 @@ export const Header = () => {
                 </div>
                 <span className="text-lg sm:text-xl font-bold hidden sm:inline">MessageCraft</span>
             </Link>
-            {/*
+            
             <div className="flex items-center space-x-2 sm:space-x-4">
                 <Badge variant="outline" className="text-xs sm:text-sm px-2 sm:px-3">
-                <span className="hidden sm:inline">{getGenerationsLeft()} Crafts restants</span>
-                <span className="sm:hidden">{getGenerationsLeft()}</span>
+                    <span className="sm:inline">user-id : {user.id}</span>
+                {/*
+                    <span className="hidden sm:inline">{getGenerationsLeft()} Crafts restants</span>
+                    <span className="sm:hidden">{getGenerationsLeft()}</span>
+                */}
                 </Badge>
-                
+                {/* 
                 {user ? (
                 <Button variant="outline" size="sm" asChild>
                     <Link to="/profile">Profil</Link>
@@ -29,8 +37,9 @@ export const Header = () => {
                     <Link to="/register">Créer un compte</Link>
                 </Button>
                 )}
+                */}
             </div>
-            */}
+            
             </div>
         </header>
     );

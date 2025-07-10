@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +17,13 @@ import Contact from "./pages/Contact";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 
+import AdminIndex from "./pages/admin/Index";
+import AdminNotFound from "./pages/admin/NotFound";
+
+const MainLayout = lazy(() => import("./layouts/MainLayout"));
+const ManagerLayout = lazy(() => import("./layouts/ManagerLayout"));
+
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -25,12 +33,19 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+        <Suspense fallback={<div>Chargement...</div>}>
           <Routes>
-            <Route path="/" element={<AppPage />} />
-            <Route path="/conditions" element={<Conditions />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/error" element={<Error />} />
-            <Route path="*" element={<NotFound />} />
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<AppPage />} />
+              <Route path="/conditions" element={<Conditions />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/error" element={<Error />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+            <Route element={<ManagerLayout />}>
+              <Route path="/manager/" element={<AdminIndex />} />
+              <Route path="/manager/*" element={<AdminNotFound />} />
+            </Route>
             {/*
             <Route path="/" element={<Landing />} />
             <Route path="/app" element={<AppPage />} />
@@ -41,6 +56,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             */}
           </Routes>
+        </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
