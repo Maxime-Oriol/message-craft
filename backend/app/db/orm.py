@@ -120,7 +120,13 @@ class ORM:
         return None
 
     def update_all(self):
-        keys = [key for key in self.__annotations__ if not key.startswith("_") and key != "id"]
+        # Prendre les clés qui ne sont pas privées et qui ne valent pas None
+        keys = [key for key in self.__annotations__ 
+                if not key.startswith("_") and key != "id" and getattr(self, key, None) is not None]
+
+        if not keys:
+            return self  # Rien à mettre à jour
+
         values = [getattr(self, key) for key in keys]
         update_text = [f'"{key}" = %s' for key in keys]
 

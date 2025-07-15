@@ -68,7 +68,7 @@ export function MessageCard({ message, onValidate, onReject, onView, onDelete, c
                 <div className="text-sm">
                     <span className="text-muted-foreground">Score: </span>
                     <span className={cn("font-semibold", scoreColor)}>
-                        {message.isTransfered ? `${(message.reliabilityScore * 100).toFixed(0)}%` : "Non calculé"}
+                        {message.isTransfered ? `${(message.reliabilityScore * 100).toFixed(2)}%` : "Non calculé"}
                     </span>
                 </div>
                 <div className="text-xs text-muted-foreground">

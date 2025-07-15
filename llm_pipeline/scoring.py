@@ -9,6 +9,7 @@ from backend.app.models.dataset_model import DatasetModel
 from llm_pipeline.utils import get_logger
 from llm_pipeline.config import ConfigLLM
 from numpy import clip
+from decimal import Decimal, ROUND_HALF_UP
 
 # Configuration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -86,8 +87,11 @@ def calculate_scoring():
             getattr(row, "distance_levenshtein", 0),
             getattr(row, "pii_factor", 0)
         ]
-        raw_score = model.predict([features])[0]
-        score = float(clip(raw_score, 0.0, 1.0))
+        
+        # raw_score = model.predict([features])[0]
+        # clipped_score = clip(raw_score, 0.0, 1.0)
+        # score = float(Decimal(clipped_score).quantize(Decimal('0.0001'), rounding=ROUND_HALF_UP))
+        score = heuristic_score(features[0], features[1], features[2])
         row.score_reliability = score
         if ConfigLLM.AUTO_VALIDATE:
             row.validated = is_validated(row)
@@ -103,3 +107,21 @@ def is_validated(item: DatasetModel):
         and item.pii_factor < ConfigLLM.MAX_PII_FACTOR
         and item.needs_validation == False
     )
+
+def heuristic_score(cosine: float, levenshtein: float, pii: float) -> float:
+    # Pondérations ajustables
+    weight_cosine = 0.45
+    weight_lev = 0.35
+    weight_pii = 0.2
+
+    # Normalisation cohérente
+    norm_cosine = min(cosine, 1)       # plus proche de 1 = mieux
+    norm_lev = min(levenshtein, 1)     # plus proche de 1 = mieux
+    norm_pii = 1 - min(pii, 1)         # plus proche de 1 = mieux (peu sensible)
+
+    score = (
+        weight_cosine * norm_cosine +
+        weight_lev * norm_lev +
+        weight_pii * norm_pii
+    )
+    return float(round(score, 4))

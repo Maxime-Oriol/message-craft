@@ -16,12 +16,7 @@ class DatasetModel(ORM):
     created_at:datetime
 
     def _find_by_message(self, message_id: str):
-        result = self.select().where("message_id = %s", (message_id,)).limit(1).query_row()
-        if result:
-            for key, value in result.items():
-                setattr(self, key, value)
-            return True
-        return False
+        return self.select().where("message_id = %s", (message_id,)).limit(1).query_row()
 
     def save(self):
         self.created_at = datetime.now()
@@ -36,7 +31,9 @@ class DatasetModel(ORM):
     def validate(self):
         if not self.message_id:
             return False
-        self._find_by_message(self.message_id)
-        self.validated = True
-        self.needs_validation = False
-        return self.update()
+        row = self._find_by_message(self.message_id)
+        if row:
+            row.validated = True
+            row.needs_validation = False
+            return row.update()
+        return False
