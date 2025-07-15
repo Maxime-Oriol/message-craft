@@ -1,26 +1,33 @@
-import sys, os
+import sys, os, shutil
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import pandas as pd
+from datetime import datetime
 import lightgbm as lgb
 import joblib, os
 from backend.app.models.dataset_model import DatasetModel
-from utils import get_logger
-from config import ConfigLLM
+from llm_pipeline.utils import get_logger
+from llm_pipeline.config import ConfigLLM
+from numpy import clip
 
 # Configuration
-MODEL_PATH = "models/lightgbm_reliability_model.pkl"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODELS_DIR = os.path.join(BASE_DIR, "models")
+os.makedirs(MODELS_DIR, exist_ok=True)
+filename = datetime.now().strftime("lightgbm-reliability-%Y%m%d-%H%M%S.pkl")
+latest_name = "lightgbm-reliability-latest.pkl"
+MODEL_PATH = os.path.join(MODELS_DIR, filename)
+
 logger = get_logger("scoring_reliability")
 
 
 def train_reliability_model():
-    logger.info("[TRAINING] Loading validated dataset...")
-    dataset = DatasetModel().where("score_reliability != NULL").query() # Les messages qui ont déjà un score = Le passé / Déjà validés
+    logger.info("[SCORING TRAINING] Loading validated dataset...")
+    dataset = DatasetModel().where("score_reliability IS NOT NULL").query() # Les messages qui ont déjà un score = Le passé / Déjà validés
     df = pd.DataFrame(dataset)
-
     if df.empty:
-        logger.warning("[TRAINING] No validated data to train on.")
-        return
+        logger.warning("[SCORING TRAINING] No validated data to train on.")
+        return False
 
     features = [
         "similarity_cosine",
@@ -30,49 +37,64 @@ def train_reliability_model():
     X = df[features]
     y = df["score_reliability"]
 
-    logger.info("[TRAINING] Training LightGBM model...")
-    model = lgb.LGBMClassifier()
+    logger.info("[SCORING TRAINING] Training LightGBM model...")
+    model = lgb.LGBMRegressor()
     model.fit(X, y)
 
-    logger.info(f"[TRAINING] Saving model to {MODEL_PATH}")
+    logger.info(f"[SCORING TRAINING] Saving model to {MODEL_PATH}")
     os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
     joblib.dump(model, MODEL_PATH)
-    logger.info("[TRAINING] Model saved.")
+
+    destination_path = os.path.join(MODELS_DIR, latest_name)
+    if os.path.isfile(destination_path):
+        os.remove(destination_path)
+    shutil.copyfile(MODEL_PATH, destination_path)
+
+    logger.info("✅ [SCORING TRAINING] Entrainement du model de scoring terminé")
+    return True
 
 
 def calculate_scoring():
+    logger.info("⏳ [SCORING] Calcul des scores des nouvelles lignes")
     logger.info("[SCORING] Loading model...")
-    if not os.path.exists(MODEL_PATH):
+    
+    destination_path = os.path.join(MODELS_DIR, latest_name)
+    if not os.path.isfile(destination_path):
         logger.error("No trained model found. Run train_reliability_model() first.")
-        raise FileNotFoundError("No trained model found. Run train_reliability_model() first.")
+        
+        # Entrainement du model puisque ça n'a pas été fait avant
+        trained = train_reliability_model()
+        if not trained:
+            logger.warning("[SCORING] Skipping scoring. No valid data available to train")
+            return
 
-    model = joblib.load(MODEL_PATH)
+    model = joblib.load(destination_path)
 
     logger.info("[SCORING] Loading unscored dataset...")
 
     orm = DatasetModel()
 
-    rows = orm.where("score_reliability IS NULL").query()
+    raw_data = orm.where("score_reliability IS NULL").query()
+    rows: list[DatasetModel] = [DatasetModel(**row) for row in raw_data]
     if not rows:
         logger.warning("[SCORING] No new entries to score.")
         return
 
-    if not isinstance(rows, list):
-        rows = [rows]
-
     for row in rows:
         features = [
-            row.get("similarity_cosine", 0),
-            row.get("distance_levenshtein", 0),
-            row.get("pii_factor", 0)  # mettre 0 par défaut si absent
+            getattr(row, "similarity_cosine", 0),
+            getattr(row, "distance_levenshtein", 0),
+            getattr(row, "pii_factor", 0)
         ]
-        score = model.predict_proba([features])[0][1]  # probabilité que ce soit une bonne donnée
+        raw_score = model.predict([features])[0]
+        score = float(clip(raw_score, 0.0, 1.0))
         row.score_reliability = score
         if ConfigLLM.AUTO_VALIDATE:
             row.validated = is_validated(row)
         row.update()
         logger.info(f"[SCORING] Updated score for id {row.id} => {score:.4f}")
 
+    logger.info("✅ [SCORING] Calcul des scores terminé")
 
 def is_validated(item: DatasetModel):
     return (

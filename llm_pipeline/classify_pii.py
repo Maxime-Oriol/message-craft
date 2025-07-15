@@ -5,9 +5,9 @@ from backend.app.models.message_model import MessageModel
 from transformers import pipeline
 
 # Initialisation du modèle NER
-ner_model = pipeline("ner", model="dslim/bert-base-NER", aggregation_strategy="simple")
+ner_model = pipeline("ner", model="Davlan/xlm-roberta-base-ner-hrl", aggregation_strategy="simple")
 
-def pii_factor(text: str, entities: list[dict]) -> float:
+def _pii_factor(text: str, entities: list[dict]) -> float:
     if not text:
         return 0.0
     pii_length = sum(e['end'] - e['start'] for e in entities)
@@ -24,7 +24,11 @@ def mask_pii_llm(message: MessageModel) -> tuple[str, float]:
     for ent in sorted(entities, key=lambda e: e['start'], reverse=True):
         label = ent['entity_group']
         start, end = ent['start'], ent['end']
+        score = ent['score']
+
+        if score < 0.80:
+            continue
         masked_text = masked_text[:start] + f"<{label}>" + masked_text[end:]
     
-    factor = pii_factor(message.message, entities)
+    factor = _pii_factor(message.message, entities)
     return masked_text, factor

@@ -6,8 +6,15 @@ router = APIRouter()
 
 @router.get("", dependencies=[Depends(check_security)])
 @router.get("/", dependencies=[Depends(check_security)])
-async def list_messages():
-    messages = MessageModel().query("""
+async def list_messages(order: str = "created_at", sort: str = "ASC"):
+    if not order or not sort:
+        return {
+            "success": False,
+            "message": "Paramètres manquants",
+            "critical": True
+        }
+    
+    messages = MessageModel().query(f"""
                                     SELECT craft_message.*, 
                                         llm_dataset.similarity_cosine, 
                                         llm_dataset.distance_levenshtein, 
@@ -18,6 +25,7 @@ async def list_messages():
                                         llm_dataset.validated
                                     FROM craft_message
                                     LEFT JOIN llm_dataset ON craft_message.id = llm_dataset.message_id
+                                    ORDER BY "{order}" {sort.upper()}
                                     """.strip())
 
     if not isinstance(messages, list):

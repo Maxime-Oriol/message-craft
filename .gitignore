@@ -17,6 +17,9 @@ dist-ssr
 .venv
 __pycache__
 
+models
+*.pkl
+
 # Editor directories and files
 
 .vscode/*

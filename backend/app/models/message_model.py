@@ -10,6 +10,7 @@ class MessageModel(ORM):
     intent:str
     generated:str
     message:str
+    transferred_to_dataset:bool
     created_at:datetime
 
     def save(self):

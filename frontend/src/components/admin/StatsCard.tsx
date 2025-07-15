@@ -101,7 +101,7 @@ export function StatsCard({ stats }: StatsCardProps) {
                 <div key={index}>
                   <p className="text-sm text-muted-foreground">{item.label}</p>
                   <p className={`text-xl font-semibold ${item.color}`}>
-                    {item ? item.value.toFixed(2) : 0}%
+                    {item ? (item.value * 100).toFixed(1) : 0}%
                   </p>
                 </div>
               ))}

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.app.routes import contact, message, messages
+from backend.app.routes import contact, message, messages, llm
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(contact.router, prefix="/api/contact")
 app.include_router(message.router, prefix="/api/message")
 app.include_router(messages.router, prefix="/api/messages")
+app.include_router(llm.router, prefix="/api/llm")
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0", port=4000, reload=True)

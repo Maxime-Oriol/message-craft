@@ -16,8 +16,9 @@ class ORM:
     _from:str
     _name:str
     _where:str|None = None
+    _where_params:tuple = ()
     _order_by:str|None = None
-    _limit:int|None = None
+    _limit:int|None = 100
 
     def __init__(self, **kwargs):
         self.conn = psycopg2.connect(
@@ -55,8 +56,9 @@ class ORM:
         self._from = table
         return self
     
-    def where(self, condition:str):
+    def where(self, condition:str, params: tuple = ()):
         self._where = condition
+        self._where_params = params
         return self
 
     def order_by(self, field):
@@ -67,6 +69,10 @@ class ORM:
         self._limit = number
         return self
 
+    def query_row(self, raw_sql=None):
+        result = self.query(raw_sql)
+        return self.__class__(**result[0]) if result else None
+    
     def query(self, raw_sql=None):
         def row_to_dict(columns, row):
             return dict(zip(columns, row))
@@ -88,7 +94,7 @@ class ORM:
         if self._limit:
             query += f" LIMIT {self._limit}"
 
-        self.cursor.execute(query)
+        self.cursor.execute(query, self._where_params)
         rows = self.cursor.fetchall()
         columns = [desc[0] for desc in self.cursor.description]
 
@@ -148,6 +154,18 @@ class ORM:
             for col, val in zip(columns, row):
                 setattr(self, col, val)
         return self
+    
+    def delete(self, where: str|None = None) -> bool:
+        if not self.id:
+            return False
+        if not where:
+            query = f'DELETE FROM {self._from} WHERE id = %s'
+            self.cursor.execute(query, (self.id,))
+        else:
+            query = f'DELETE FROM {self._from} WHERE %s'
+            self.cursor.execute(query, (where,))
+        self.conn.commit()
+        return True
     
     @classmethod
     def from_dict(cls, data: dict):

@@ -1,24 +1,30 @@
-import os
+import os, shutil
 import pandas as pd
 from datetime import datetime
-from transformers import MT5Tokenizer, MT5ForConditionalGeneration, Trainer, TrainingArguments, DataCollatorForSeq2Seq
-from utils import get_logger
+from transformers import T5Tokenizer, MT5ForConditionalGeneration, Trainer, TrainingArguments, DataCollatorForSeq2Seq
+from datasets import Dataset
+from llm_pipeline.utils import get_logger
 from backend.app.models.dataset_model import DatasetModel
-from config import ConfigLLM
+from llm_pipeline.config import ConfigLLM
 
 # --- Configuration
-week = str(datetime.now().isocalendar()[1])
-pattern = datetime.now().strftime("%Y-W%W") + week
-MODEL_PATH = f"models/mt5-base-{pattern}"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODELS_DIR = os.path.join(BASE_DIR, "models")
+os.makedirs(MODELS_DIR, exist_ok=True)
+filename = datetime.now().strftime("mt5-base-%Y%m%d-%H%M%S.pkl")
+latest_name = "mt5-base-latest.pkl"
+MODEL_PATH = os.path.join(MODELS_DIR, filename)
+
 logger = get_logger("train_mt5_model")
 
 
 def train_mt5_model():
-    logger.info("[TRAINING] Loading validated dataset...")
+    logger.info("⏳ [MT5 MODEL] Début de l'entrainement du model")
+    logger.info("[MT5 MODEL] Loading validated dataset...")
     dataset = DatasetModel().query(f"""
-        SELECT message_craft.*, llm_dataset.*
+        SELECT craft_message.*, llm_dataset.*
         FROM llm_dataset
-        INNER JOIN message_craft ON message_craft.id = llm_dataset.message_id
+        INNER JOIN craft_message ON craft_message.id = llm_dataset.message_id
         WHERE llm_dataset.score_reliability > {ConfigLLM.MIN_SCORE_RELIABILITY}
         AND llm_dataset.validated = TRUE
     """)
@@ -39,7 +45,7 @@ def train_mt5_model():
     df["target_text"] = df["message"]
 
     # --- Initialisation du tokenizer et modèle mT5
-    tokenizer = MT5Tokenizer.from_pretrained("google/mt5-base")
+    tokenizer = T5Tokenizer.from_pretrained("google/mt5-base")
     model = MT5ForConditionalGeneration.from_pretrained("google/mt5-base")
 
     # --- Tokenization
@@ -66,7 +72,7 @@ def train_mt5_model():
     training_args = TrainingArguments(
         output_dir=MODEL_PATH,
         per_device_train_batch_size=4,
-        num_train_epochs=3,
+        num_train_epochs=5, # A réduire quand le dataset sera plus important
         logging_dir="./logs",
         logging_steps=10,
         save_strategy="epoch"
@@ -91,4 +97,11 @@ def train_mt5_model():
     os.makedirs(MODEL_PATH, exist_ok=True)
     model.save_pretrained(MODEL_PATH)
     tokenizer.save_pretrained(MODEL_PATH)
+    
+    destination_path = os.path.join(MODELS_DIR, latest_name)
+    if os.path.exists(destination_path):
+        shutil.rmtree(destination_path)
+    shutil.copytree(MODEL_PATH, destination_path)
     logger.info("[TRAINING] Model and tokenizer saved.")
+    
+    logger.info("[MT5 MODEL] ✅ Entrainement du model terminé")

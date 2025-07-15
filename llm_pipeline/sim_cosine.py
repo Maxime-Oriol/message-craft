@@ -9,4 +9,4 @@ def calculate_cosine(message: MessageModel) -> float:
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform([message.generated, message.message])
     similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])
-    return similarity[0][0]
+    return float(similarity[0][0]) # Sinon ça retourne un numpy qui ne peut pas être inséré en base de données
